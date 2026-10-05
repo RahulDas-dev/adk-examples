@@ -1,0 +1,20 @@
+[package]
+name = "adk-rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+adk-rust = { version = "2.2.0", default-features = false, features = ["agents", "anthropic", "runner", "sessions", "tools", "mcp-http", "skills-progressive-disclosure", "plugin"] }
+tokio = { version = "1", features = ["full"] }
+dotenvy = "0.15"
+chrono = "0.4"
+schemars = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+adk-devtools = "2.2.0"
+# `adk-rust`'s own "plugin" feature only enables the adk-plugin dependency - it
+# never forwards to adk-agent's "enhanced-plugins" feature, so `.enhanced_plugin()`
+# is otherwise unreachable through the facade crate at any feature combination.
+# Depending on adk-agent directly with that feature unifies it into the same
+# build, which is enough to unlock the method - see examples/07_skill_variables.rs.
+adk-agent = { version = "2.2.0", default-features = false, features = ["enhanced-plugins"] }

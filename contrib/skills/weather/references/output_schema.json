@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WeatherOutput",
+  "description": "Output schema for the weather skill. The script always emits a JSON array - one element per city queried. Each element is either a success object or an error object.",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "title": "Success",
+        "type": "object",
+        "required": ["city_query", "location", "current", "units"],
+        "additionalProperties": false,
+        "properties": {
+          "city_query": { "type": "string", "description": "The city name as the user typed it" },
+          "location": {
+            "type": "object",
+            "required": ["name", "country", "latitude", "longitude"],
+            "properties": {
+              "name": { "type": "string", "description": "Resolved city name" },
+              "region": { "type": "string", "description": "State / province (may be empty)" },
+              "country": { "type": "string", "description": "Country name" },
+              "latitude": { "type": "number", "description": "Decimal latitude" },
+              "longitude": { "type": "number", "description": "Decimal longitude" }
+            }
+          },
+          "current": {
+            "type": "object",
+            "required": ["time_utc", "condition", "temperature_c", "feels_like_c", "humidity_percent", "wind_speed_kmh", "precipitation_mm"],
+            "properties": {
+              "time_utc": { "type": "string", "description": "Observation time in UTC (ISO 8601)" },
+              "condition": { "type": "string", "description": "Human-readable condition from WMO code" },
+              "temperature_c": { "type": "number", "description": "Air temperature in °C" },
+              "feels_like_c": { "type": "number", "description": "Feels-like temperature in °C" },
+              "humidity_percent": { "type": "integer", "description": "Relative humidity 0-100" },
+              "wind_speed_kmh": { "type": "number", "description": "Wind speed in km/h" },
+              "precipitation_mm": { "type": "number", "description": "Current precipitation in mm" }
+            }
+          },
+          "units": {
+            "type": "object",
+            "properties": {
+              "temperature": { "type": "string" },
+              "wind_speed": { "type": "string" },
+              "precipitation": { "type": "string" }
+            }
+          }
+        }
+      },
+      {
+        "title": "Error",
+        "type": "object",
+        "required": ["city_query", "error"],
+        "additionalProperties": false,
+        "properties": {
+          "city_query": { "type": "string", "description": "The city name that failed" },
+          "error": { "type": "string", "description": "User-friendly error message" }
+        }
+      }
+    ]
+  }
+}

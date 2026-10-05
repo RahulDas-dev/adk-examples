@@ -1,0 +1,7 @@
+/target
+.env
+
+# Python virtualenv under contrib/mcps/ - never commit this
+contrib/mcps/.venv/
+__pycache__/
+*.pyc
